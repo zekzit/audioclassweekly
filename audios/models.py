@@ -14,7 +14,7 @@ class AudioClass(models.Model):
 class AudioClassWeek(models.Model):
     audio_class = models.ForeignKey(AudioClass, on_delete=models.CASCADE)
     week_name = models.CharField(max_length=200)
-    audio_file = models.FileField(upload_to='uploads/audios', default='')
+    audio_file = models.FileField(upload_to='uploads/audios', default='', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Audio class week'
