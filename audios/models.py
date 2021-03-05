@@ -24,7 +24,7 @@ def path_and_rename(path):
 class AudioClassWeek(models.Model):
     audio_class = models.ForeignKey(AudioClass, on_delete=models.CASCADE)
     week_name = models.CharField(max_length=200)
-    audio_file = models.FileField(upload_to=path_and_rename('audios'), default='', blank=True, null=True)
+    audio_file = models.FileField(upload_to=path_and_rename('uploads/audios'), default='', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Audio class week'
