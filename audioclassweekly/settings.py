@@ -93,8 +93,8 @@ if os.getenv('GAE_APPLICATION', None):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/bssmsharerecords:us-central1:classes-instance',
-            'USER': 'classes-instance',
+            'HOST': '/cloudsql/bssmsharerecords:us-west1:amtclasses-instance',
+            'USER': 'amtclasses-instance',
             'PASSWORD': 'TesT1234',
             'NAME': 'audios',
         }
@@ -112,7 +112,7 @@ else:
             'HOST': '127.0.0.1',
             'PORT': '3306',
             'NAME': 'audios',
-            'USER': 'classes-instance',
+            'USER': 'amtclasses-instance',
             'PASSWORD': 'TesT1234',
         }
     }

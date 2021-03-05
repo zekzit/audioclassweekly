@@ -11,11 +11,11 @@
 - set current project: gcloud config set project [project_id]\
 \
 2. Follow https://cloud.google.com/python/django/appengine#cloud-console\
-- SQL instance name: classes-instance\
+- SQL instance name: amtclasses-instance\
 - SQL pass: T4\
-- connectionName: bssmsharerecords:us-central1:classes-instance\
+- connectionName: bssmsharerecords:us-west1:amtclasses-instance\
 - database name: audios\
-- database user name: classes-instance\
+- database user name: amtclasses-instance\
 - database pass: T4\
 - superuser: iferino\
 - pass: T4\
@@ -23,4 +23,8 @@
 3 Handle upload file, follow https://pnote.eu/notes/django-app-engine-user-uploaded-files/\
 - create storage name: bssmaudiorecords\
 - add \'91django-storages\'92 and \'91google-cloud-storage\'92 in requirements.txt\
-}
+\
+\
+ISSUES\
+- force download instead of open new page\
+- file too big}
