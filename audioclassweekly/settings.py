@@ -175,8 +175,16 @@ USE_TZ = True
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = 'uploads'
-MEDIA_URL = '/uploads/'
+if os.getenv('GAE_APPLICATION'):
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    GS_BUCKET_NAME = 'bssmaudiorecords'
+    GS_DEFAULT_ACL = 'publicRead'
+    MEDIA_URL = 'https://storage.googleapis.com/bssmaudiorecords/'
+else:
+    PROJECT_PATH = os.path.join(os.path.abspath(os.path.split(__file__)[0]), '..')
+    MEDIA_ROOT = os.path.join(PROJECT_PATH, 'site_media')
+    MEDIA_URL = '/site_media/'
+
 
 # Activate Django-Heroku.
 #django_heroku.settings(locals())
