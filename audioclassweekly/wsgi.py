@@ -8,11 +8,9 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 """
 
 import os, sys
-#add path to django project folder
-#sys.path.append('<PATH>/audioclassweekly')
+sys.path.append('/home/ferin_mac/bssmsharerecords/audioclassweekly')
 
-#add virtualenv sit-packages path
-#sys.path.append('<PATH_TO_VENV>/lib/python2.7/site-packages')
+sys.path.append('/home/ferin_mac/bssmsharerecords/venv/lib/python3.8/site-packages')
 
 from django.core.wsgi import get_wsgi_application
 
