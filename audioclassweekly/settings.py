@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 import json
 
-with open('/etc/config.json') as config_file:
-    config = json.load(config_file)
+#with open('/etc/config.json') as config_file:
+#    config = json.load(config_file)
 
 #import django_heroku
 #from pathlib import Path
@@ -29,13 +29,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['SECRET_KEY']
+SECRET_KEY = '648j7@g_xwk8q8icg*-it-9&=7a!1r_@oa2wdq4gop7!w((+t5'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['35.225.254.157']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
