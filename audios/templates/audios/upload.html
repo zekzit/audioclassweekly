@@ -48,6 +48,7 @@
 
           //if file selected
           if (input.files.length != 0) {
+            document.getElementById("alert_box").style["display"]="none";
             var file_data = input.files[0]
             console.log(file_data)
             var formData=new FormData();
@@ -88,7 +89,7 @@
             xhr.send(formData);
           } else {
             document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
-                                Please select your file. 
+                                Please select your file.
                             </div>`;
           }
 
