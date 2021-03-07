@@ -46,43 +46,52 @@
       function onFormSubmit(event) {
           event.preventDefault();
 
-          var file_data = input.files[0]
-          var formData=new FormData();
-          formData.append('csrfmiddlewaretoken', csrf[0].value)
-          formData.append("audio_file",file_data);
+          //if file selected
+          if (input.files.length != 0) {
+            var file_data = input.files[0]
+            console.log(file_data)
+            var formData=new FormData();
+            formData.append('csrfmiddlewaretoken', csrf[0].value)
+            formData.append("audio_file",file_data);
 
-          var xhr=new XMLHttpRequest();
-          xhr.open("POST","{% url 'upload' class_id week_id %}");
-          xhr.onreadystatechange = function () {
-            // In local files, status is 0 upon success in Mozilla Firefox
-            if(xhr.readyState === XMLHttpRequest.DONE) {
-              var status = xhr.status;
-              if ((status === 0 || (status >= 200 && status < 400)) && (xhr.responseText.trim() == 'Uploaded')) {
-                // The request has been completed successfully, redirect to listen page
-                window.location.href = 'listen';
-              } else {
-                // Oh no! There has been an error with the request!
-                document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
-                                    Oops... something went wrong
-                                </div>`;
+            var xhr=new XMLHttpRequest();
+            xhr.open("POST","{% url 'upload' class_id week_id %}");
+            xhr.onreadystatechange = function () {
+              // In local files, status is 0 upon success in Mozilla Firefox
+              if(xhr.readyState === XMLHttpRequest.DONE) {
+                var status = xhr.status;
+                if ((status === 0 || (status >= 200 && status < 400)) && (xhr.responseText.trim() == 'Uploaded')) {
+                  // The request has been completed successfully, redirect to listen page
+                  window.location.href = 'listen';
+                } else {
+                  // Oh no! There has been an error with the request!
+                  document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
+                                      Oops... something went wrong
+                                  </div>`;
+                }
               }
-            }
-          };
-          xhr.upload.addEventListener("progress",function (ev) {
-             if(ev.lengthComputable){
-                   var percentage=(ev.loaded/ev.total*100|0);
-                   document.getElementById("form_div").style["display"]="none";
-                   document.getElementById("submit_div").style["display"]="none";
-                 document.getElementById("progress_div").style["display"]="block";
-                 document.getElementById("progress_bar").style["width"]=""+percentage+"%";
-                 document.getElementById("progress_bar").innerHTML=""+percentage+"%";
-                 document.getElementById("progress_text").innerHTML="Uploaded : "+parseInt(ev.loaded/1000000)+"/"+parseInt(ev.total/1000000)+" MB";
-                 console.log("Uploaded : "+ev.loaded);
-                 console.log("TOTAL : "+ev.total);
-                 console.log(percentage)
-             }
-          });
-          xhr.send(formData);
+            };
+            xhr.upload.addEventListener("progress",function (ev) {
+               if(ev.lengthComputable){
+                     var percentage=(ev.loaded/ev.total*100|0);
+                     document.getElementById("form_div").style["display"]="none";
+                     document.getElementById("submit_div").style["display"]="none";
+                   document.getElementById("progress_div").style["display"]="block";
+                   document.getElementById("progress_bar").style["width"]=""+percentage+"%";
+                   document.getElementById("progress_bar").innerHTML=""+percentage+"%";
+                   document.getElementById("progress_text").innerHTML="Uploaded : "+parseInt(ev.loaded/1000000)+"/"+parseInt(ev.total/1000000)+" MB";
+                   console.log("Uploaded : "+ev.loaded);
+                   console.log("TOTAL : "+ev.total);
+                   console.log(percentage)
+               }
+            });
+            xhr.send(formData);
+          } else {
+            document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
+                                Please select your file. 
+                            </div>`;
+          }
+
       }
   </script>
 {% endblock content %}
