@@ -27,9 +27,9 @@ def upload_form(request, class_id, week_id):
     exists_week = AudioClassWeek.objects.get(pk=week_id)
     if request.method == 'POST':
         form = AudioClassWeekUploadForm(request.POST, request.FILES, instance=exists_week)
-        if form.is_valid():
+        if request.is_ajax() and form.is_valid():
             form.save()
-            return HttpResponseRedirect('/' + str(class_id) + '/' + str(week_id) + '/listen')
+        return HttpResponseRedirect('/' + str(class_id) + '/' + str(week_id) + '/listen')
     else:
         form = AudioClassWeekUploadForm()
     return render(request, 'audios/upload.html', {'form': form, 'class_id': class_id, 'week_id': week_id, 'week': exists_week})

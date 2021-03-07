@@ -1,18 +1,24 @@
+{% extends "audios/base.html" %}
+
+{% block content %}
+
 <center>
 <h1>Upload audio record for {{week.audio_class.audio_class_name}} - {{ week.week_name }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'upload' class_id week_id %}" method="post" enctype="multipart/form-data">
+<form action="{% url 'upload' class_id week_id %}" id="upload-form">
     {% csrf_token %}
     <p>
         {{ form.audio_file.errors }}
         {{ form.audio_file }}
     </p>
-    <p><input type="submit" value="Upload" /></p>
+    <p><input type="submit" value="Upload" id="upload-btn"/></p>
 </form>
+<div id="progress-box" class="not-visible">progress</div>
 <p><a href="/">Back to listing page</a></p>
 <br>
 .....................................
 <p><p>Contact me: <a href="mailto:ferin.mac@gmail.com?subject=Share Audio Records">ferin.mac@gmail.com</a>
 </center>
+{% endblock content %}
