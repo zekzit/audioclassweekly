@@ -1,6 +1,11 @@
-<center>
+{% extends "audios/base.html" %}
+
+{% block content %}
+
 {% if audio_classes %}
-<h1>BSSM2 AMTs & Bible classes Trimester3</h1>
+<br/>
+<h1>BSSM2 AMTs & Bible Classes Trimester3</h1>
+<br/>
 <table class="center">
     {% for audio_class in audio_classes %}
     <tr>
@@ -19,9 +24,9 @@
     <p>No classes are available.</p>
 {% endif %}
 
-<br>
+<br/>
 .....................................
 <p><p>Contact me: <a href="mailto:ferin.mac@gmail.com?subject=Share Audio Records">ferin.mac@gmail.com</a>
 
 
-</center>
+{% endblock content %}

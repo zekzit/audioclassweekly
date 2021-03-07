@@ -1,11 +1,16 @@
-<center>
+{% extends "audios/base.html" %}
+
+{% block content %}
+<br/>
 <h2>{{ week.audio_class.audio_class_name }} - {{ week.week_name }}</h2>
 <br/>
+<br/>
 <audio src="{{ week.audio_file.url }}" controls autoplay></audio>
-
+<br/>
+<br/>
 <p><a href="{{ week.audio_file.url }}" download="audioRecord">Download File</a></p>
 <p><a href="/">Back to listing page</a></p>
-<br>
+<br/>
 .....................................
 <p><p>Contact me: <a href="mailto:ferin.mac@gmail.com?subject=Share Audio Records">ferin.mac@gmail.com</a>
-</center>
+{% endblock content %}

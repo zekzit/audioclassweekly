@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Django and JavaScript File Upload Example With Progress Bar</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
-<center>
-<h1>Upload audio record for {{week.audio_class.audio_class_name}} - {{ week.week_name }}</h1>
+{% extends "audios/base.html" %}
+
+{% block content %}
+
+<div id="alert_box"></div>
+<br/>
+<h2>Upload audio record for {{week.audio_class.audio_class_name}} - {{ week.week_name }}</h2>
+<br/>
+<br/>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form enctype="multipart/form-data" onsubmit="onFormSubmit(event)">
   {% csrf_token %}
     <div class="container">
-
-        <div class="row form-group">
+        <div class="row form-group" id="form_div">
             <div class="col-lg-12">
                 <label>Select File : </label>
                 {{ form.audio_file.errors }}
                 {{ form.audio_file }}
             </div>
         </div>
-
-        <div class="row form-group">
+        <div class="row form-group" id="submit_div">
             <div class="col-lg-12">
                 <button type="submit" value="Upload" class="btn btn-success">SUBMIT</button>
             </div>
@@ -40,53 +36,53 @@
     </div>
 </form>
 <p><a href="/">Back to listing page</a></p>
-<br>
+<br/>
 .....................................
 <p><p>Contact me: <a href="mailto:ferin.mac@gmail.com?subject=Share Audio Records">ferin.mac@gmail.com</a>
-</center>
-<script>
-  var csrf = document.getElementsByName('csrfmiddlewaretoken')
-  var input = document.getElementById('id_audio_file')
-    function onFormSubmit(event) {
-        event.preventDefault();
 
-        var file_data = input.files[0]
-        var formData=new FormData();
-        formData.append('csrfmiddlewaretoken', csrf[0].value)
-        formData.append("audio_file",file_data);
+  <script>
+    var csrf = document.getElementsByName('csrfmiddlewaretoken')
+    var input = document.getElementById('id_audio_file')
+      function onFormSubmit(event) {
+          event.preventDefault();
 
-        var xhr=new XMLHttpRequest();
-        xhr.open("POST","{% url 'upload' class_id week_id %}");
-        xhr.onreadystatechange = function () {
-          // In local files, status is 0 upon success in Mozilla Firefox
-          if(xhr.readyState === XMLHttpRequest.DONE) {
-            var status = xhr.status;
-            if (status === 0 || (status >= 200 && status < 400)) {
-              // The request has been completed successfully
-              console.log(xhr.responseText);
-              if (xhr.responseText.trim() == 'Uploaded') {
+          var file_data = input.files[0]
+          var formData=new FormData();
+          formData.append('csrfmiddlewaretoken', csrf[0].value)
+          formData.append("audio_file",file_data);
+
+          var xhr=new XMLHttpRequest();
+          xhr.open("POST","{% url 'upload' class_id week_id %}");
+          xhr.onreadystatechange = function () {
+            // In local files, status is 0 upon success in Mozilla Firefox
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+              var status = xhr.status;
+              if ((status === 0 || (status >= 200 && status < 400)) && (xhr.responseText.trim() == 'Uploaded')) {
+                // The request has been completed successfully, redirect to listen page
                 window.location.href = 'listen';
+              } else {
+                // Oh no! There has been an error with the request!
+                document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
+                                    Oops... something went wrong
+                                </div>`;
               }
-            } else {
-              // Oh no! There has been an error with the request!
             }
-          }
-        };
-        xhr.upload.addEventListener("progress",function (ev) {
-           if(ev.lengthComputable){
-                 var percentage=(ev.loaded/ev.total*100|0);
-               document.getElementById("progress_div").style["display"]="block";
-               document.getElementById("progress_bar").style["width"]=""+percentage+"%";
-               document.getElementById("progress_bar").innerHTML=""+percentage+"%";
-               document.getElementById("progress_text").innerHTML="Uploaded : "+parseInt(ev.loaded/1000000)+"/"+parseInt(ev.total/1000000)+" MB";
-               console.log("Uploaded : "+ev.loaded);
-               console.log("TOTAL : "+ev.total);
-               console.log(percentage)
-           }
-        });
-        xhr.send(formData);
-    }
-</script>
-
-</body>
-</html>
+          };
+          xhr.upload.addEventListener("progress",function (ev) {
+             if(ev.lengthComputable){
+                   var percentage=(ev.loaded/ev.total*100|0);
+                   document.getElementById("form_div").style["display"]="none";
+                   document.getElementById("submit_div").style["display"]="none";
+                 document.getElementById("progress_div").style["display"]="block";
+                 document.getElementById("progress_bar").style["width"]=""+percentage+"%";
+                 document.getElementById("progress_bar").innerHTML=""+percentage+"%";
+                 document.getElementById("progress_text").innerHTML="Uploaded : "+parseInt(ev.loaded/1000000)+"/"+parseInt(ev.total/1000000)+" MB";
+                 console.log("Uploaded : "+ev.loaded);
+                 console.log("TOTAL : "+ev.total);
+                 console.log(percentage)
+             }
+          });
+          xhr.send(formData);
+      }
+  </script>
+{% endblock content %}
