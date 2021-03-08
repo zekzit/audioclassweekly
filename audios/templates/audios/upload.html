@@ -1,23 +1,18 @@
-{% extends "audios/base.html" %}
-
-{% block content %}
+{% extends "audios/base.html" %} {% block content %}
 
 <div id="alert_box"></div>
 <br/>
 <h2>Upload audio record for {{week.audio_class.audio_class_name}} - {{ week.week_name }}</h2>
 <br/>
-<br/>
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<br/> {% if error_message %}
+<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form enctype="multipart/form-data" onsubmit="onFormSubmit(event)">
-  {% csrf_token %}
+    {% csrf_token %}
     <div class="container">
         <div class="row form-group" id="form_div">
             <div class="col-lg-12">
-                <label>Select File : </label>
-                {{ form.audio_file.errors }}
-                {{ form.audio_file }}
+                <label>Select File : </label> {{ form.audio_file.errors }} {{ form.audio_file }}
             </div>
         </div>
         <div class="row form-group" id="submit_div">
@@ -27,7 +22,7 @@
         </div>
         <div class="form-group" style="display:none;" id="progress_div">
             <div class="progress">
-                    <div class="progress-bar" id="progress_bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                <div class="progress-bar" id="progress_bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
             </div>
         </div>
         <div class="row form-group">
@@ -36,63 +31,66 @@
     </div>
 </form>
 <p><a href="/">Back to listing page</a></p>
-<br/>
-.....................................
-<p><p>Contact me: <a href="mailto:ferin.mac@gmail.com?subject=Share Audio Records">ferin.mac@gmail.com</a>
+<br/> .....................................
+<p>
+    <p>Contact me: <a href="mailto:ferin.mac@gmail.com?subject=Share Audio Records">ferin.mac@gmail.com</a>
 
-  <script>
-    var csrf = document.getElementsByName('csrfmiddlewaretoken')
-    var input = document.getElementById('id_audio_file')
-      function onFormSubmit(event) {
-          event.preventDefault();
+        <script>
+            var csrf = document.getElementsByName('csrfmiddlewaretoken')
+            var input = document.getElementById('id_audio_file')
 
-          //if file selected
-          if (input.files.length != 0) {
-            document.getElementById("alert_box").style["display"]="none";
-            var file_data = input.files[0]
-            console.log(file_data)
-            var formData=new FormData();
-            formData.append('csrfmiddlewaretoken', csrf[0].value)
-            formData.append("audio_file",file_data);
+            function onFormSubmit(event) {
+                event.preventDefault();
 
-            var xhr=new XMLHttpRequest();
-            xhr.open("POST","{% url 'upload' class_id week_id %}");
-            xhr.onreadystatechange = function () {
-              // In local files, status is 0 upon success in Mozilla Firefox
-              if(xhr.readyState === XMLHttpRequest.DONE) {
-                var status = xhr.status;
-                if ((status === 0 || (status >= 200 && status < 400)) && (xhr.responseText.trim() == 'Uploaded')) {
-                  // The request has been completed successfully, redirect to listen page
-                  window.location.href = 'listen';
-                } else {
-                  // Oh no! There has been an error with the request!
-                  document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
+                //if file selected
+                if (input.files.length != 0) {
+                    document.getElementById("alert_box").style["display"] = "none";
+                    var file_data = input.files[0]
+                    console.log(file_data)
+                    var formData = new FormData();
+                    formData.append('csrfmiddlewaretoken', csrf[0].value)
+                    formData.append("audio_file", file_data);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "{% url 'upload' class_id week_id %}");
+                    xhr.onreadystatechange = function() {
+                        // In local files, status is 0 upon success in Mozilla Firefox
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            var status = xhr.status;
+                            if ((status === 0 || (status >= 200 && status < 400)) && (xhr.responseText.trim() == 'Uploaded')) {
+                                // The request has been completed successfully, redirect to listen page
+                                window.location.href = 'listen';
+                            } else {
+                                // Oh no! There has been an error with the request!
+                                document.getElementById("alert_box").innerHTML = `<div class="alert alert-danger" role="alert">
                                       Oops... something went wrong
                                   </div>`;
-                }
-              }
-            };
-            xhr.upload.addEventListener("progress",function (ev) {
-               if(ev.lengthComputable){
-                     var percentage=(ev.loaded/ev.total*100|0);
-                     document.getElementById("form_div").style["display"]="none";
-                     document.getElementById("submit_div").style["display"]="none";
-                   document.getElementById("progress_div").style["display"]="block";
-                   document.getElementById("progress_bar").style["width"]=""+percentage+"%";
-                   document.getElementById("progress_bar").innerHTML=""+percentage+"%";
-                   document.getElementById("progress_text").innerHTML="Uploaded : "+parseInt(ev.loaded/1000000)+"/"+parseInt(ev.total/1000000)+" MB";
-                   console.log("Uploaded : "+ev.loaded);
-                   console.log("TOTAL : "+ev.total);
-                   console.log(percentage)
-               }
-            });
-            xhr.send(formData);
-          } else {
-            document.getElementById("alert_box").innerHTML=`<div class="alert alert-danger" role="alert">
+                            }
+                        }
+                    };
+                    xhr.upload.addEventListener("progress", function(ev) {
+                        if (ev.lengthComputable) {
+                            var percentage = (ev.loaded / ev.total * 100 | 0);
+                            document.getElementById("form_div").style["display"] = "none";
+                            document.getElementById("submit_div").style["display"] = "none";
+                            document.getElementById("progress_div").style["display"] = "block";
+                            document.getElementById("progress_bar").style["width"] = "" + percentage + "%";
+                            document.getElementById("progress_bar").innerHTML = "" + percentage + "%";
+                            document.getElementById("progress_text").innerHTML = "Uploaded : " + parseInt(ev.loaded / 1000000) + "/" + parseInt(ev.total / 1000000) + " MB";
+                            console.log("Uploaded : " + ev.loaded);
+                            console.log("TOTAL : " + ev.total);
+                            console.log(percentage)
+                        }
+                    });
+                    xhr.send(formData);
+                } else {
+                    document.getElementById("alert_box").innerHTML = `<div class="alert alert-danger" role="alert">
                                 Please select your file.
                             </div>`;
-          }
+                }
 
-      }
-  </script>
-{% endblock content %}
+            }
+
+            input.accept = "audio/*";
+        </script>
+        {% endblock content %}
