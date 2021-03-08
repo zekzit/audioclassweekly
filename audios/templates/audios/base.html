@@ -1,21 +1,23 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BSSM Share Records Trimester3</title>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'audios/css/style.css' %}">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/amplitudejs@5.3.0/dist/amplitude.js"></script>
 
 </head>
+
 <body>
-<center>
-    <div class="container">
-        {% block content %}
-        {% endblock content %}
+    <div class="container" style="text-align: center;">
+        {% block content %} {% endblock content %}
     </div>
-</center>
 </body>
+
 </html>
